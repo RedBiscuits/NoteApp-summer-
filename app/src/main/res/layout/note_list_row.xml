@@ -24,7 +24,7 @@
         android:textColor="@color/colorAccent"
         android:textSize="@dimen/dot_text_size"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/note" />
+        app:layout_constraintTop_toBottomOf="@+id/timestamp" />
 
     <TextView
         android:id="@+id/timestamp"

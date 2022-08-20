@@ -8,6 +8,8 @@ import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -18,15 +20,17 @@ import com.datastructures.notesapp.pojo.Note;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
 
-public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.MyViewHolder> {
+public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.MyViewHolder> implements Filterable {
 
     private Context context;
     private List<Note> notesList;
+    private List<Note> notesListFull;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView note;
@@ -57,6 +61,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.MyViewHolder
     public NotesAdapter(Context context, List<Note> notesList) {
         this.context = context;
         this.notesList = notesList;
+        notesListFull = new ArrayList<>(notesList);
     }
 
     @Override
@@ -103,4 +108,41 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.MyViewHolder
 
         return "";
     }
+
+
+    @Override
+    public Filter getFilter() {
+        return noteFilter;
+    }
+
+    private Filter noteFilter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence charSequence) {
+            List<Note> filteredList = new ArrayList<>();
+
+            if (charSequence == null || charSequence.length() == 0){
+                filteredList.addAll(notesListFull);
+            }else {
+                String filterPattern = charSequence.toString().toLowerCase().trim();
+
+                for (Note note : notesListFull){
+                    if(note.getNote().toLowerCase().contains(filterPattern)
+                    || note.getDetails().toLowerCase().contains(filterPattern)){
+                        filteredList.add(note);
+                    }
+                }
+            }
+            FilterResults filterResults = new FilterResults();
+            filterResults.values = filteredList;
+            return filterResults;
+        }
+
+        @Override
+        protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+            notesList.clear();
+            notesList.addAll((List)filterResults.values);
+            notifyDataSetChanged();
+        }
+    };
+
 }
