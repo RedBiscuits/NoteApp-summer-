@@ -1,40 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/note_background"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginHorizontal="6dp"
+    android:layout_marginTop="10dp"
+    android:background="@drawable/rounded_corner_square"
     android:clickable="true"
     android:foreground="?attr/selectableItemBackground"
-    android:paddingBottom="@dimen/dimen_10"
     android:paddingLeft="@dimen/activity_margin"
+    android:paddingTop="@dimen/dimen_10"
     android:paddingRight="@dimen/activity_margin"
-    android:paddingTop="@dimen/dimen_10">
+    android:paddingBottom="@dimen/dimen_10">
 
     <TextView
         android:id="@+id/dot"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/dot_height"
-        android:layout_marginRight="@dimen/dot_margin_right"
-        android:layout_marginTop="@dimen/dimen_10"
         android:includeFontPadding="false"
-        android:textColor="@color/colorAccent"
         android:lineSpacingExtra="0dp"
-        android:textSize="@dimen/dot_text_size" />
+        android:textColor="@color/colorAccent"
+        android:textSize="@dimen/dot_text_size"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/note" />
 
     <TextView
         android:id="@+id/timestamp"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/dot"
         android:textColor="@color/timestamp"
-        android:textSize="@dimen/timestamp" />
+        android:textSize="@dimen/timestamp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/note"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/timestamp"
-        android:layout_toRightOf="@id/dot"
-        android:textColor="@color/note_list_text"
-        android:textSize="@dimen/note_list_text" />
+        android:textColor="@color/black"
+        android:textSize="@dimen/note_list_text"
+        android:textStyle="bold"
+        android:layout_marginTop="6dp"
+        app:layout_constraintStart_toEndOf="@id/dot"
+        app:layout_constraintTop_toBottomOf="@+id/timestamp" />
 
-</RelativeLayout>
+    <TextView
+        android:id="@+id/note_details_TV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="8dp"
+        android:textColor="@color/black"
+        android:textSize="@dimen/note_list_text"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/note"
+        app:layout_constraintTop_toBottomOf="@+id/note" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

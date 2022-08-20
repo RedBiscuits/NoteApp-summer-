@@ -6,10 +6,14 @@ public class Note {
 
     public static final String COLUMN_ID = "id";
     public static final String COLUMN_NOTE = "note";
+    public static final String COLUMN_NOTE_DETAILS = "details";
     public static final String COLUMN_TIMESTAMP = "timestamp";
+
+
 
     private int id;
     private String note;
+    private String details;
     private String timestamp;
 
 
@@ -18,16 +22,18 @@ public class Note {
             "CREATE TABLE " + TABLE_NAME + "("
                     + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                     + COLUMN_NOTE + " TEXT,"
+                    + COLUMN_NOTE_DETAILS + " TEXT,"
                     + COLUMN_TIMESTAMP + " DATETIME DEFAULT CURRENT_TIMESTAMP"
                     + ")";
 
     public Note() {
     }
 
-    public Note(int id, String note, String timestamp) {
+    public Note(int id, String note,String details, String timestamp) {
         this.id = id;
         this.note = note;
         this.timestamp = timestamp;
+        this.details = details;
     }
 
     public int getId() {
@@ -40,6 +46,14 @@ public class Note {
 
     public void setNote(String note) {
         this.note = note;
+    }
+
+    public String getDetails() {
+        return details;
+    }
+
+    public void setDetails(String details) {
+        this.details = details;
     }
 
     public String getTimestamp() {

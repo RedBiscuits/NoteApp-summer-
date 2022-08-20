@@ -1,6 +1,6 @@
 <resources>
     <dimen name="fab_margin">16dp</dimen>
-    <dimen name="activity_margin">16dp</dimen>
+    <dimen name="activity_margin">12dp</dimen>
     <dimen name="dot_margin_right">10dp</dimen>
     <dimen name="msg_no_notes">26sp</dimen>
     <dimen name="margin_top_no_notes">120dp</dimen>
@@ -10,5 +10,5 @@
     <dimen name="dot_height">30dp</dimen>
     <dimen name="dot_text_size">40sp</dimen>
     <dimen name="timestamp">14sp</dimen>
-    <dimen name="note_list_text">18sp</dimen>
+    <dimen name="note_list_text">20sp</dimen>
 </resources>
