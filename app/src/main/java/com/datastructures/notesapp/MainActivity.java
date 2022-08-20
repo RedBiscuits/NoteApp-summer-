@@ -21,6 +21,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.ContextCompat;
@@ -52,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -165,9 +167,7 @@ public class MainActivity extends AppCompatActivity {
                 .setCancelable(false)
                 .setPositiveButton(shouldUpdate ? "update" : "save", (dialogBox, id) -> {
 
-                })
-                .setNegativeButton("cancel",
-                        (dialogBox, id) -> dialogBox.cancel());
+                });
 
         final AlertDialog alertDialog = alertDialogBuilderUserInput.create();
         alertDialog.show();
@@ -230,12 +230,15 @@ public class MainActivity extends AppCompatActivity {
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
                 int position = viewHolder.getAdapterPosition();
                 if(swipeDir == ItemTouchHelper.LEFT) {
-                    new AlertDialog.Builder(getBaseContext())
-                            .setTitle("Title")
-                            .setMessage("Do you really want to whatever?")
-                            .setIcon(android.R.drawable.ic_dialog_alert)
-                            .setPositiveButton(android.R.string.yes, (dialog, whichButton) -> deleteNote(position))
-                            .setNegativeButton(android.R.string.no, null).show();
+                    android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(MainActivity.this);
+                    builder.setTitle("Delete task");
+                    builder.setMessage("Are you sure you want do delete this ?");
+                    builder.setPositiveButton("Confirm", (dialogInterface, i) ->
+                            deleteNote(position));
+                    builder.setNegativeButton(android.R.string.cancel, (dialogInterface, i) ->
+                            Toast.makeText(MainActivity.this , "Canceled" , Toast.LENGTH_SHORT));
+                    android.app.AlertDialog dialog = builder.create();
+                    dialog.show();
                 }
                 else{
                     showNoteDialog(true, notesList.get(position), position);
@@ -287,11 +290,11 @@ public class MainActivity extends AppCompatActivity {
         itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
         itemTouchHelper.attachToRecyclerView(recyclerView);
     }
+
     /*
     * Showing Search menu option
     * Used to filter notes
     * */
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();

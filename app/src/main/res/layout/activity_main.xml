@@ -12,6 +12,9 @@
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:layout_marginHorizontal="6dp"
+        android:background="@drawable/rounded_corner_square"
         android:theme="@style/AppTheme.AppBarOverlay">
 
         <androidx.appcompat.widget.Toolbar
@@ -19,7 +22,8 @@
             android:layout_width="match_parent"
             app:title="@string/app_name"
             android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
+            android:backgroundTint="#373232"
+            android:background="@drawable/rounded_corner_square"
             app:popupTheme="@style/AppTheme.PopupOverlay" />
 
     </com.google.android.material.appbar.AppBarLayout>
