@@ -190,11 +190,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return userList;
     }
 
-    /**
-     * This method to update user record
-     *
-     * @param user
-     */
+
     public void updateUser(User user) {
         SQLiteDatabase db = this.getWritableDatabase();
 

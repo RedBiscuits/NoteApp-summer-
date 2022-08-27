@@ -8,13 +8,10 @@ import java.util.Random;
 
 public class Note {
     public static final String TABLE_NAME = "notes";
-
     public static final String COLUMN_ID = "id";
     public static final String COLUMN_NOTE = "note";
     public static final String COLUMN_NOTE_DETAILS = "details";
     public static final String COLUMN_TIMESTAMP = "timestamp";
-
-
 
     private int id;
     private String note;

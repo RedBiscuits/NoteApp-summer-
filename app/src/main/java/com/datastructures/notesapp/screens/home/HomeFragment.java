@@ -197,8 +197,11 @@ public class HomeFragment extends Fragment {
                                 toggleEmptyNotes();
                             }
                     );
-                    builder.setNegativeButton(android.R.string.cancel, (dialogInterface, i) ->
-                            Toast.makeText(getContext() , "Canceled" , Toast.LENGTH_SHORT));
+                    builder.setNegativeButton(android.R.string.cancel, (dialogInterface, i) ->{
+                            Toast.makeText(getContext() , "Canceled" , Toast.LENGTH_SHORT);
+                            mAdapter.notifyDataSetChanged();
+
+                    });
 
                     android.app.AlertDialog dialog = builder.create();
                     dialog.show();
