@@ -64,6 +64,8 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.MyViewHolder
     public void setNotesList(List<Note> notes){
         notesList.clear();
         notesList.addAll(notes);
+        notesListFull.clear();
+        notesListFull.addAll(notes);
         notifyDataSetChanged();
     }
 
