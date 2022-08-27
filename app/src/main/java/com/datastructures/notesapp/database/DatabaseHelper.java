@@ -8,16 +8,14 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.datastructures.notesapp.pojo.Note;
+import com.datastructures.notesapp.pojo.User;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
-    // Database Version
-    private static final int DATABASE_VERSION = 3;
-
-    // Database Name
+    private static final int DATABASE_VERSION = 4;
     private static final String DATABASE_NAME = "notes_db";
 
 
@@ -29,8 +27,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
 
-        // create notes table
-        db.execSQL(Note.CREATE_TABLE);
+        db.execSQL(Note.CREATE_NOTE_TABLE);
+        db.execSQL(User.CREATE_USER_TABLE);
     }
 
     // Upgrading database
@@ -38,33 +36,28 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // Drop older table if existed
         db.execSQL("DROP TABLE IF EXISTS " + Note.TABLE_NAME);
+        db.execSQL(User.DROP_USER_TABLE);
 
         // Create tables again
         onCreate(db);
     }
 
     public long insertNote(String note, String details) {
-        // get writable database as we want to write data
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        // `id` and `timestamp` will be inserted automatically.
-        // no need to add them
+
         values.put(Note.COLUMN_NOTE, note);
         values.put(Note.COLUMN_NOTE_DETAILS, details);
 
-        // insert row
         long id = db.insert(Note.TABLE_NAME, null, values);
 
-        // close db connection
         db.close();
 
-        // return newly inserted row id
         return id;
     }
 
     public Note getNote(long id) {
-        // get readable database as we are not inserting anything
         SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor cursor = db.query(Note.TABLE_NAME,
@@ -84,7 +77,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         );
 
-        // close the db connection
         cursor.close();
 
         return note;
@@ -94,14 +86,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public List<Note> getAllNotes() {
         List<Note> notes = new ArrayList<>();
 
-        // Select All Query
         String selectQuery = "SELECT  * FROM " + Note.TABLE_NAME + " ORDER BY " +
                 Note.COLUMN_TIMESTAMP + " DESC";
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
 
-        // looping through all rows and adding to list
         if (cursor.moveToFirst()) {
             do {
                 Note note = new Note();
@@ -114,10 +104,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             } while (cursor.moveToNext());
         }
 
-        // close db connection
         db.close();
 
-        // return notes list
         return notes;
     }
 
@@ -141,7 +129,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(Note.COLUMN_NOTE, note.getNote());
         values.put(Note.COLUMN_NOTE_DETAILS, note.getDetails());
 
-        // updating row
         return db.update(Note.TABLE_NAME, values, Note.COLUMN_ID + " = ?",
                 new String[]{String.valueOf(note.getId())});
     }
@@ -151,5 +138,135 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.delete(Note.TABLE_NAME, Note.COLUMN_ID + " = ?",
                 new String[]{String.valueOf(note.getId())});
         db.close();
+    }
+
+    public void addUser(User user) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(User.COLUMN_USER_NAME, user.getName());
+        values.put(User.COLUMN_USER_EMAIL, user.getEmail());
+        values.put(User.COLUMN_USER_PASSWORD, user.getPassword());
+
+        db.insert(User.TABLE_USER, null, values);
+        db.close();
+    }
+
+    @SuppressLint("Range")
+    public List<User> getAllUser() {
+        String[] columns = {
+                User.COLUMN_USER_ID,
+                User.COLUMN_USER_EMAIL,
+                User.COLUMN_USER_NAME,
+                User.COLUMN_USER_PASSWORD
+        };
+        // sorting orders
+        String sortOrder =
+                User.COLUMN_USER_NAME + " ASC";
+        List<User> userList = new ArrayList<User>();
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.query(User.TABLE_USER, //Table to query
+                columns,null,null,null,null,sortOrder);
+
+
+        // Traversing through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                User user = new User();
+                user.setId(Integer.parseInt(cursor.getString(cursor.getColumnIndex(User.COLUMN_USER_ID))));
+                user.setName(cursor.getString(cursor.getColumnIndex(User.COLUMN_USER_NAME)));
+                user.setEmail(cursor.getString(cursor.getColumnIndex(User.COLUMN_USER_EMAIL)));
+                user.setPassword(cursor.getString(cursor.getColumnIndex(User.COLUMN_USER_PASSWORD)));
+                // Adding user record to list
+                userList.add(user);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+
+        // return user list
+        return userList;
+    }
+
+    /**
+     * This method to update user record
+     *
+     * @param user
+     */
+    public void updateUser(User user) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(User.COLUMN_USER_NAME, user.getName());
+        values.put(User.COLUMN_USER_EMAIL, user.getEmail());
+        values.put(User.COLUMN_USER_PASSWORD, user.getPassword());
+
+        // updating row
+        db.update(User.TABLE_USER, values, User.COLUMN_USER_ID + " = ?",
+                new String[]{String.valueOf(user.getId())});
+        db.close();
+    }
+
+    public void deleteUser(User user) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        // delete user record by id
+        db.delete(User.TABLE_USER, User.COLUMN_USER_ID + " = ?",
+                new String[]{String.valueOf(user.getId())});
+        db.close();
+    }
+
+    public boolean checkUser(String email) {
+
+        // array of columns to fetch
+        String[] columns = {
+                User.COLUMN_USER_ID
+        };
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        // selection criteria
+        String selection = User.COLUMN_USER_EMAIL + " = ?";
+
+        // selection argument
+        String[] selectionArgs = {email};
+
+        Cursor cursor = db.query(User.TABLE_USER,columns,selection,selectionArgs,null,null,null);                      //The sort order
+        int cursorCount = cursor.getCount();
+        cursor.close();
+        db.close();
+
+        if (cursorCount > 0) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public boolean checkUser(String email, String password) {
+
+        // array of columns to fetch
+        String[] columns = {
+                User.COLUMN_USER_ID
+        };
+        SQLiteDatabase db = this.getReadableDatabase();
+        // selection criteria
+        String selection = User.COLUMN_USER_EMAIL + " = ?" + " AND " + User.COLUMN_USER_PASSWORD + " = ?";
+
+        // selection arguments
+        String[] selectionArgs = {email, password};
+
+        // query user table with conditions
+        Cursor cursor = db.query(User.TABLE_USER,columns,selection,selectionArgs,null,null,null);                      //The sort order
+
+        int cursorCount = cursor.getCount();
+
+        cursor.close();
+        db.close();
+        if (cursorCount > 0) {
+            return true;
+        }
+
+        return false;
     }
 }

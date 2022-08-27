@@ -23,7 +23,7 @@ public class Note {
     private ColorStateList backgroundColor;
 
     // Create table SQL query
-    public static final String CREATE_TABLE =
+    public static final String CREATE_NOTE_TABLE =
             "CREATE TABLE " + TABLE_NAME + "("
                     + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                     + COLUMN_NOTE + " TEXT,"
