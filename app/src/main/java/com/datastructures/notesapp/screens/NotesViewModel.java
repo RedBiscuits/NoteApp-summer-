@@ -52,7 +52,7 @@ public class NotesViewModel extends ViewModel {
      * Updating note in db and updating
      * item in the list by its position
      */
-     void updateNote(String note,String details, int position) {
+     public void updateNote(String note,String details, int position) {
         Note n = _notesMutableData.getValue().get(position);
         // updating note text
         n.setNote(note);
@@ -69,7 +69,7 @@ public class NotesViewModel extends ViewModel {
      * Deleting note from SQLite and removing the
      * item from the list by its position
      */
-     void deleteNote(int position  ) {
+     public void deleteNote(int position  ) {
         // deleting the note from db
         db.deleteNote(_notesMutableData.getValue().get(position));
 
