@@ -1,12 +1,13 @@
 package com.example.test;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class Login extends AppCompatActivity {
 
@@ -14,20 +15,20 @@ public class Login extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        EditText email=(EditText) findViewById(R.id.Email);
-        EditText password=(EditText) findViewById(R.id.Password);
-        Button submit=(Button)findViewById(R.id.Loginbtn);
-        submit.setOnClickListener(new View.OnClickListener() {
+
+        TextView notes = (TextView) findViewById(R.id.notesLogin);
+        EditText loginEmail=(EditText) findViewById(R.id.loginEmail);
+        EditText loginPassword=(EditText) findViewById(R.id.loginPassword);
+        Button loginSubmit=(Button)findViewById(R.id.loginBtn);
+
+        loginSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                clickMyButton(view,email,password);
-
+                if(loginEmail.getText().toString().equalsIgnoreCase("a")||loginPassword.getText().toString().equalsIgnoreCase("a")){
+                    notes.setText("Hello World");
+                    Toast.makeText(getApplicationContext(), "Invalid data", Toast.LENGTH_LONG).show();
+                }
             }
         });
-    }
-    public void clickMyButton(View view,EditText email,EditText password){
-        if(email.getText().toString()=="a"||password.getText().toString()=="a"){
-            Toast.makeText(getApplicationContext(), "Invalid data", Toast.LENGTH_LONG).show();
-        }
     }
 }

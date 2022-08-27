@@ -3,18 +3,36 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/android/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.2985" />
-        <entry key="..\:/android/app/src/main/res/drawable/ic_launcher_background.xml" value="0.2985" />
-        <entry key="..\:/android/app/src/main/res/drawable/icon_background.xml" value="0.2985" />
-        <entry key="..\:/android/app/src/main/res/layout/activity_login.xml" value="0.302536231884058" />
-        <entry key="..\:/android/app/src/main/res/layout/activity_main.xml" value="0.302536231884058" />
-        <entry key="..\:/android/app/src/main/res/layout/activity_main_window.xml" value="0.302536231884058" />
-        <entry key="..\:/android/app/src/main/res/layout/mainwindow.xml" value="0.4519464720194647" />
-        <entry key="..\:/android/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.2985" />
+        <entry key="..\:/Development/AndroidStudio/MyApplication/app/src/main/res/drawable-v24/delete.xml" value="0.2475" />
+        <entry key="..\:/Development/AndroidStudio/MyApplication/app/src/main/res/drawable-v24/edit.xml" value="0.2475" />
+        <entry key="..\:/Development/AndroidStudio/MyApplication/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.2475" />
+        <entry key="..\:/Development/AndroidStudio/MyApplication/app/src/main/res/drawable/ic_baseline_add_24.xml" value="0.2475" />
+        <entry key="..\:/Development/AndroidStudio/MyApplication/app/src/main/res/drawable/ic_launcher_background.xml" value="0.2475" />
+        <entry key="..\:/Development/AndroidStudio/MyApplication/app/src/main/res/drawable/rounded_corner_square.xml" value="0.2475" />
+        <entry key="..\:/Development/AndroidStudio/MyApplication/app/src/main/res/layout/activity_login.xml" value="0.25416666666666665" />
+        <entry key="..\:/Development/AndroidStudio/MyApplication/app/src/main/res/layout/activity_main.xml" value="0.25416666666666665" />
+        <entry key="..\:/Development/AndroidStudio/MyApplication/app/src/main/res/layout/activity_main_window.xml" value="0.25416666666666665" />
+        <entry key="..\:/Development/AndroidStudio/MyApplication/app/src/main/res/layout/activity_registration.xml" value="0.25416666666666665" />
+        <entry key="..\:/Development/AndroidStudio/MyApplication/app/src/main/res/layout/content_main.xml" value="0.25416666666666665" />
+        <entry key="..\:/Development/AndroidStudio/MyApplication/app/src/main/res/layout/note_dialog.xml" value="0.25416666666666665" />
+        <entry key="..\:/Development/AndroidStudio/MyApplication/app/src/main/res/layout/note_list_row.xml" value="0.25416666666666665" />
+        <entry key="..\:/Development/AndroidStudio/MyApplication/app/src/main/res/menu/menu_main.xml" value="0.25416666666666665" />
+        <entry key="..\:/Development/AndroidStudio/MyApplication/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.2475" />
+        <entry key="..\:/Development/AndroidStudio/MyApplication/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.2475" />
+        <entry key="..\:/Users/Joo/AndroidStudioProjects/NoteApp-summer-/app/src/main/res/drawable-v24/edit.xml" value="0.124" />
+        <entry key="..\:/Users/Joo/AndroidStudioProjects/NoteApp-summer-/app/src/main/res/drawable/ic_launcher_background.xml" value="0.197" />
+        <entry key="..\:/Users/Joo/AndroidStudioProjects/NoteApp-summer-/app/src/main/res/drawable/rounded_corner_square.xml" value="0.197" />
+        <entry key="..\:/Users/Joo/AndroidStudioProjects/NoteApp-summer-/app/src/main/res/layout/activity_login.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/Joo/AndroidStudioProjects/NoteApp-summer-/app/src/main/res/layout/activity_main.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/Joo/AndroidStudioProjects/NoteApp-summer-/app/src/main/res/layout/activity_main_window.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/Joo/AndroidStudioProjects/NoteApp-summer-/app/src/main/res/layout/content_main.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/Joo/AndroidStudioProjects/NoteApp-summer-/app/src/main/res/layout/note_dialog.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/Joo/AndroidStudioProjects/NoteApp-summer-/app/src/main/res/layout/note_list_row.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/Joo/AndroidStudioProjects/NoteApp-summer-/app/src/main/res/menu/menu_main.xml" value="0.25416666666666665" />
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

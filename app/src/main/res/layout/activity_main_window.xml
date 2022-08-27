@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/Loginbtn"
+        app:layout_constraintBottom_toTopOf="@+id/mainRegBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -20,34 +20,37 @@
         <ImageView
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:src="@drawable/icon" />
+            android:src="@drawable/icon"
+            tools:ignore="ImageContrastCheck"
+            android:contentDescription="TODO" />
 
         <TextView
+            android:id="@+id/notesMain"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="cursive"
-            android:text="Notes"
+            android:text="@string/text_view"
             android:textSize="85sp" />
     </LinearLayout>
 
     <Button
-        android:id="@+id/Login"
+        android:id="@+id/mainLoginBtn"
         android:layout_width="125dp"
         android:layout_height="wrap_content"
-        android:text="login"
+        android:text="@string/login_interface"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/Loginbtn"
+        app:layout_constraintStart_toEndOf="@+id/mainRegBtn"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
     <Button
-        android:id="@+id/Loginbtn"
+        android:id="@+id/mainRegBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="registrition"
+        android:text="@string/registration_interface"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/Login"
+        app:layout_constraintEnd_toStartOf="@+id/mainLoginBtn"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
