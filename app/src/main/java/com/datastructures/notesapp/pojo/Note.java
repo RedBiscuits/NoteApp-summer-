@@ -1,6 +1,11 @@
 package com.datastructures.notesapp.pojo;
 
 
+import android.content.res.ColorStateList;
+import android.graphics.Color;
+
+import java.util.Random;
+
 public class Note {
     public static final String TABLE_NAME = "notes";
 
@@ -15,7 +20,7 @@ public class Note {
     private String note;
     private String details;
     private String timestamp;
-
+    private ColorStateList backgroundColor;
 
     // Create table SQL query
     public static final String CREATE_TABLE =
@@ -27,13 +32,42 @@ public class Note {
                     + ")";
 
     public Note() {
+        backgroundColor = getColor();
     }
 
-    public Note(int id, String note,String details, String timestamp) {
+    public ColorStateList getBackgroundColor() {
+        return backgroundColor;
+    }
+
+    public void setBackgroundColor(ColorStateList backgroundColor) {
+        this.backgroundColor = backgroundColor;
+    }
+
+    public Note(int id, String note, String details, String timestamp) {
         this.id = id;
         this.note = note;
         this.timestamp = timestamp;
         this.details = details;
+        backgroundColor = getColor();
+    }
+
+    private ColorStateList getColor() {
+        Random random = new Random();
+        return ColorStateList.valueOf(Color.argb(100
+                , random.nextInt()% 256
+                , random.nextInt()% 256
+                , random.nextInt()% 256));
+    }
+
+    @Override
+    public String toString() {
+        return "Note{" +
+                "id=" + id +
+                ", note='" + note + '\'' +
+                ", details='" + details + '\'' +
+                ", timestamp='" + timestamp + '\'' +
+                ", backgroundColor=" + backgroundColor +
+                '}';
     }
 
     public int getId() {

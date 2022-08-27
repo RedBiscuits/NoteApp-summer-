@@ -1,12 +1,12 @@
-package com.datastructures.notesapp;
+package com.datastructures.notesapp.screens;
 
-import android.content.DialogInterface;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -23,15 +23,15 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
+import com.datastructures.notesapp.R;
 import com.datastructures.notesapp.adapters.NotesAdapter;
-import com.datastructures.notesapp.database.DatabaseHelper;
 import com.datastructures.notesapp.pojo.Note;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -40,14 +40,12 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private NotesAdapter mAdapter;
-    private List<Note> notesList = new ArrayList<>();
-    private CoordinatorLayout coordinatorLayout;
     private RecyclerView recyclerView;
     private TextView noNotesView;
+    private NotesViewModel viewModel;
     ItemTouchHelper.SimpleCallback simpleItemTouchCallback;
     ItemTouchHelper itemTouchHelper;
 
-    private DatabaseHelper db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,86 +55,30 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        coordinatorLayout = findViewById(R.id.coordinator_layout);
+        viewModel = new ViewModelProvider(this).get(NotesViewModel.class);
         recyclerView = findViewById(R.id.recycler_view);
         noNotesView = findViewById(R.id.empty_notes_view);
+        viewModel.setNotes(this);
 
-        db = new DatabaseHelper(this);
-
-        notesList.addAll(db.getAllNotes());
+        viewModel._notesMutableData.observe(this, notes -> {
+            mAdapter.setNotesList(notes);
+        }
+        );
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(view -> showNoteDialog(false, null, -1));
 
-        mAdapter = new NotesAdapter(this, notesList);
+        mAdapter = new NotesAdapter(this);
         RecyclerView.LayoutManager mLayoutManager = new StaggeredGridLayoutManager(
                 2 , StaggeredGridLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
+//        recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(mAdapter);
 
         toggleEmptyNotes();
 
         setupItemTouchHelper();
 
-    }
-
-    /**
-     * Inserting new note in db
-     * and refreshing the list
-     */
-    private void createNote(String note, String details) {
-        // inserting note in db and getting
-        // newly inserted note id
-        long id = db.insertNote(note , details);
-
-        // get the newly inserted note from db
-        Note n = db.getNote(id);
-
-        if (n != null) {
-            // adding new note to array list at 0 position
-            notesList.add(0, n);
-
-            // refreshing the list
-            mAdapter.notifyDataSetChanged();
-
-            toggleEmptyNotes();
-        }
-    }
-
-    /**
-     * Updating note in db and updating
-     * item in the list by its position
-     */
-    private void updateNote(String note,String details, int position) {
-        Note n = notesList.get(position);
-        // updating note text
-        n.setNote(note);
-        n.setDetails(details);
-
-        // updating note in db
-        db.updateNote(n);
-
-        // refreshing the list
-        notesList.set(position, n);
-        mAdapter.notifyItemChanged(position);
-
-        toggleEmptyNotes();
-    }
-
-    /**
-     * Deleting note from SQLite and removing the
-     * item from the list by its position
-     */
-    private void deleteNote(int position) {
-        // deleting the note from db
-        db.deleteNote(notesList.get(position));
-
-        // removing the note from the list
-        notesList.remove(position);
-        mAdapter.notifyItemRemoved(position);
-
-        toggleEmptyNotes();
     }
 
 
@@ -184,14 +126,18 @@ public class MainActivity extends AppCompatActivity {
             // check if user updating note
             if (shouldUpdate && note != null) {
                 // update note by it's id
-                updateNote(inputNoteTitle.getText().toString()
+                viewModel.updateNote(inputNoteTitle.getText().toString()
                         ,inputNoteDetails.getText().toString()
                         , position);
+                mAdapter.notifyDataSetChanged();
             } else {
                 // create new note
-                createNote(inputNoteTitle.getText().toString()
-                        ,inputNoteDetails.getText().toString()  );
+                viewModel.createNote(inputNoteTitle.getText().toString()
+                        ,inputNoteDetails.getText().toString() );
+                mAdapter.notifyDataSetChanged();
+
             }
+            toggleEmptyNotes();
         });
     }
 
@@ -201,7 +147,7 @@ public class MainActivity extends AppCompatActivity {
     private void toggleEmptyNotes() {
         // you can check notesList.size() > 0
 
-        if (db.getNotesCount() > 0) {
+        if (viewModel._notesMutableData.getValue().size()> 0) {
             noNotesView.setVisibility(View.GONE);
         } else {
             noNotesView.setVisibility(View.VISIBLE);
@@ -230,18 +176,25 @@ public class MainActivity extends AppCompatActivity {
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
                 int position = viewHolder.getAdapterPosition();
                 if(swipeDir == ItemTouchHelper.LEFT) {
-                    android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(MainActivity.this);
+                    android.app.AlertDialog.Builder builder
+                            = new android.app.AlertDialog.Builder(MainActivity.this);
+
                     builder.setTitle("Delete task");
                     builder.setMessage("Are you sure you want do delete this ?");
-                    builder.setPositiveButton("Confirm", (dialogInterface, i) ->
-                            deleteNote(position));
+                    builder.setPositiveButton("Confirm", (dialogInterface, i) -> {
+                                viewModel.deleteNote(position);
+                                mAdapter.notifyDataSetChanged();
+                                toggleEmptyNotes();
+                            }
+                    );
                     builder.setNegativeButton(android.R.string.cancel, (dialogInterface, i) ->
                             Toast.makeText(MainActivity.this , "Canceled" , Toast.LENGTH_SHORT));
+
                     android.app.AlertDialog dialog = builder.create();
                     dialog.show();
                 }
                 else{
-                    showNoteDialog(true, notesList.get(position), position);
+                    showNoteDialog(true, mAdapter.getNotesList().get(position), position);
                 }
             }
 

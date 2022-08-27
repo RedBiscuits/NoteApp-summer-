@@ -45,23 +45,26 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.MyViewHolder
             dot = view.findViewById(R.id.dot);
             timestamp = view.findViewById(R.id.timestamp);
             constraintLayout = view.findViewById(R.id.note_background);
-            constraintLayout.setBackgroundTintList(getColor());
         }
 
-        private ColorStateList getColor() {
-            Random random = new Random();
-            return ColorStateList.valueOf(Color.argb(100
-                    , random.nextInt()% 256
-                    , random.nextInt()% 256
-                    , random.nextInt()% 256));
-        }
+
     }
 
 
-    public NotesAdapter(Context context, List<Note> notesList) {
+    public NotesAdapter(Context context) {
         this.context = context;
-        this.notesList = notesList;
+        notesList = new ArrayList<>();
         notesListFull = new ArrayList<>(notesList);
+    }
+
+    public List<Note> getNotesList(){
+        return notesList;
+    }
+
+    public void setNotesList(List<Note> notes){
+        notesList.clear();
+        notesList.addAll(notes);
+        notifyDataSetChanged();
     }
 
     @Override
@@ -84,6 +87,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.MyViewHolder
 
         // Formatting and displaying timestamp
         holder.timestamp.setText(formatDate(note.getTimestamp()));
+        holder.constraintLayout.setBackgroundTintList(note.getBackgroundColor());
     }
 
     @Override
