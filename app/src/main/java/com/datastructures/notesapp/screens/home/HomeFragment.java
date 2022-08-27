@@ -291,4 +291,11 @@ public class HomeFragment extends Fragment {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
     }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        mAdapter.setNotesList(viewModel._notesMutableData.getValue());
+        mAdapter.notifyDataSetChanged();
+    }
 }

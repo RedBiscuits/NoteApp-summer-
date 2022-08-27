@@ -4,6 +4,7 @@ package com.datastructures.notesapp.adapters;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,10 +14,15 @@ import android.widget.Filterable;
 import android.widget.TextView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.navigation.NavDirections;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.datastructures.notesapp.R;
 import com.datastructures.notesapp.pojo.Note;
+import com.datastructures.notesapp.screens.details.DetailsFragment;
+import com.datastructures.notesapp.screens.details.DetailsFragmentArgs;
+import com.datastructures.notesapp.screens.home.HomeFragmentDirections;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -90,6 +96,15 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.MyViewHolder
         // Formatting and displaying timestamp
         holder.timestamp.setText(formatDate(note.getTimestamp()));
         holder.constraintLayout.setBackgroundTintList(note.getBackgroundColor());
+        holder.itemView.setOnClickListener(view -> {
+
+            com.datastructures.notesapp.screens.home.HomeFragmentDirections.ActionHomeFragment2ToDetailsFragment action
+                    = HomeFragmentDirections.actionHomeFragment2ToDetailsFragment();
+            action.setNoteSelected(note.getNote());
+            action.setNoteSelectedDetails(note.getDetails());
+
+            Navigation.findNavController(view).navigate((NavDirections) action);
+        });
     }
 
     @Override
